@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>MedBooks Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              fontFamily: {
+                sans: ['Inter', 'system-ui', 'sans-serif'],
+              },
+              animation: {
+                'slide-in-up': 'slideInUp 0.3s ease-out forwards',
+                'slide-in-left': 'slideInLeft 0.3s ease-out forwards',
+                'slide-in-right': 'slideInRight 0.3s ease-out forwards',
+              },
+              keyframes: {
+                slideInUp: {
+                  '0%': { transform: 'translateY(100%)', opacity: '0' },
+                  '100%': { transform: 'translateY(0)', opacity: '1' },
+                },
+                slideInLeft: {
+                  '0%': { transform: 'translateX(-100%)' },
+                  '100%': { transform: 'translateX(0)' },
+                },
+                slideInRight: {
+                  '0%': { transform: 'translateX(100%)' },
+                  '100%': { transform: 'translateX(0)' },
+                }
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      .no-scrollbar::-webkit-scrollbar {
+          display: none;
+      }
+      /* Hide scrollbar for IE, Edge and Firefox */
+      .no-scrollbar {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+      }
+      body {
+        -webkit-tap-highlight-color: transparent;
+        background-color: #f9fafb;
+      }
+      .safe-area-pb {
+        padding-bottom: env(safe-area-inset-bottom, 20px);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2.39.3"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
