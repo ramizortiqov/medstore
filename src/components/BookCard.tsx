@@ -63,7 +63,7 @@ export const BookCard: React.FC<BookCardProps> = ({ book, onClick }) => {
         <div className="mt-3 pt-3 border-t border-gray-50 flex items-center justify-between">
           <div className="flex flex-col">
             <span className={`text-lg font-bold leading-none ${isAvailable ? 'text-blue-600' : 'text-gray-400'}`}>
-              {formattedPrice} С
+              {formattedPrice} с
             </span>
           </div>
 
