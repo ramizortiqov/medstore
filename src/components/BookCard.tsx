@@ -64,7 +64,7 @@ export const BookCard: React.FC<BookCardProps> = ({ book, onClick }) => {
           <div className="flex flex-col">
             <span className="text-[10px] text-gray-400 font-medium">Цена:</span>
             <span className={`text-lg font-bold leading-none ${isAvailable ? 'text-blue-600' : 'text-gray-400'}`}>
-              {formattedPrice} ₽
+              {formattedPrice} С
             </span>
           </div>
 
