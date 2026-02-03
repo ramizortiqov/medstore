@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo, useEffect } from 'react';
 import { BOOKS, CATEGORIES } from './constants';
 import { Book, Category } from './types';
@@ -13,7 +12,7 @@ import { X, Loader2 } from 'lucide-react';
 // Supabase import
 import { supabase } from './supabaseClient';
 
-// ВАЖНО: Замените эти ID на реальные ID пользователей Telegram, которые являются админами.
+// ВАЖНО: Замените эти ID на реальные ID пользователей Telegram (получить через @userinfobot)
 const ADMIN_IDS = [
   6520890849, 
   6720999592
@@ -33,12 +32,21 @@ const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  
+  // <-- НОВОЕ: Состояние, является ли текущий пользователь админом
+  const [isTelegramAdmin, setIsTelegramAdmin] = useState(false);
 
   // Initialize Telegram Web App
   useEffect(() => {
     if (window.Telegram?.WebApp) {
       window.Telegram.WebApp.ready();
       window.Telegram.WebApp.expand();
+
+      // <-- НОВОЕ: Проверка прав при загрузке
+      const user = window.Telegram.WebApp.initDataUnsafe?.user;
+      if (user && ADMIN_IDS.includes(user.id)) {
+        setIsTelegramAdmin(true);
+      }
     }
   }, []);
 
@@ -85,7 +93,7 @@ const App: React.FC = () => {
     };
   }, []);
 
-  // Check if current user is admin based on Telegram ID
+  // Check if current user is admin based on Telegram ID (Helper function)
   const checkTelegramAdmin = () => {
     const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
     if (user && ADMIN_IDS.includes(user.id)) {
@@ -97,8 +105,6 @@ const App: React.FC = () => {
   // CRUD Operations with Supabase
   const handleAddBook = async (newBookData: Omit<Book, 'id'>) => {
     try {
-      // Supabase automatically generates ID if the column is set to uuid_generate_v4()
-      // We explicitly remove 'id' just in case, relying on DB generation
       const { error } = await supabase
         .from('books')
         .insert([newBookData]);
@@ -134,7 +140,6 @@ const App: React.FC = () => {
 
       if (error) throw error;
       
-      // Если удаленный товар был открыт, закрываем модалку
       if (selectedBook?.id === id) setSelectedBook(null);
     } catch (e) {
       console.error("Error deleting document: ", e);
@@ -146,23 +151,13 @@ const App: React.FC = () => {
       try {
         setIsLoading(true);
         
-        // 1. Delete all existing books
-        // Fetch all IDs first (safest way without disabling safe update mode)
         const { data: allBooks } = await supabase.from('books').select('id');
         if (allBooks && allBooks.length > 0) {
           const ids = allBooks.map(b => b.id);
           await supabase.from('books').delete().in('id', ids);
         }
         
-        // 2. Add default books
-        // We prepare books by removing the explicit ID '1', '2' etc. 
-        // to let Supabase generate UUIDs, OR we cast them to string if using text IDs.
-        // Assuming your DB table 'id' is TEXT, we can keep the IDs or let them be whatever.
-        // Let's rely on constants.ts IDs for the reset to ensure consistency with mock data.
         const booksToInsert = BOOKS.map(b => {
-           // If your DB ID is UUID, you might need to remove .id here:
-           // const { id, ...rest } = b; return rest;
-           // For now, we assume ID is TEXT in Supabase as per previous Types.
            return b; 
         });
 
@@ -172,7 +167,6 @@ const App: React.FC = () => {
 
         alert('База данных успешно сброшена.');
         
-        // Manual refetch to ensure sync if realtime is slow
         const { data, error: fetchError } = await supabase.from('books').select('*');
         if (!fetchError && data) setBooks(data as Book[]);
 
@@ -188,6 +182,7 @@ const App: React.FC = () => {
   // Auth Logic
   const handleAdminRequest = () => {
     setIsMenuOpen(false);
+    // Если пользователь уже определен как админ по ID, пускаем сразу
     if (checkTelegramAdmin()) {
       setIsAdminOpen(true);
     } else {
@@ -279,6 +274,8 @@ const App: React.FC = () => {
           onSelectCategory={setSelectedCategory}
           onClose={() => setIsMenuOpen(false)}
           onOpenAdmin={handleAdminRequest}
+          // <-- НОВОЕ: Передаем права доступа в меню
+          isAdmin={isTelegramAdmin} 
         />
       )}
 
