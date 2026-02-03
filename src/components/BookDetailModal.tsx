@@ -12,9 +12,18 @@ export const BookDetailModal: React.FC<BookDetailModalProps> = ({ book, onClose 
   const isAvailable = book.status === 'In Stock';
 
   const handleBuyClick = () => {
-    alert(`Офис находится по адресу:\nул. Медицинская, д. 42, оф. 101.\n\nЖдем вас с 09:00 до 18:00!`);
-    // Alternatively, open maps:
-    // window.open('https://yandex.ru/maps/?text=ул.+Медицинская+42', '_blank');
+    // Проверяем, доступны ли функции Telegram
+    if (window.Telegram?.WebApp?.showPopup) {
+      window.Telegram.WebApp.showPopup({
+        title: 'Адрес',
+        message: 'Подземкаи пеши Приёмный, Қараболо (Мағозаи 9-ум) \nВақти корӣ: 07:10 - 21:00 \n Телефон: +992929238520',
+        buttons: [{ type: 'ok', text: 'Ок' }]
+      });
+    } else {
+      // Если открыто не в Telegram (например, в обычном браузере),
+      // показываем старый alert как запасной вариант
+      alert(`Подземкаи пеши Приёмный, Қараболо (Мағозаи 9-ум) \nВақти корӣ: 07:10 - 21:00\n Телефон: +992929238520`);
+    }
   };
 
   if (isZoomed) {
