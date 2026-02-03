@@ -336,19 +336,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           ))}
         </div>
         
-        {/* Reset Button */}
-        <div className="mt-8 pt-6 border-t border-gray-200">
-           <button 
-             onClick={onResetData}
-             className="w-full py-3 flex items-center justify-center gap-2 text-red-500 bg-red-50 hover:bg-red-100 rounded-xl transition-colors font-medium text-sm"
-           >
-             <RotateCcw className="w-4 h-4" />
-             Перезаписать базу (Сброс)
-           </button>
-           <p className="text-xs text-center text-gray-400 mt-2">
-             Внимание: это действие заменит облачные данные на стандартные
-           </p>
-        </div>
+        
       </div>
     </div>
   );
