@@ -98,7 +98,7 @@ export const BookDetailModal: React.FC<BookDetailModalProps> = ({ book, onClose 
               
               <div className="flex items-center space-x-3 mt-2">
                  <span className="text-2xl font-bold text-blue-600">
-                   {book.price} С
+                   {book.price} с
                  </span>
                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${isAvailable ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                     {book.status === 'In Stock' ? 'В наличии' : 'Нет в наличии'}
