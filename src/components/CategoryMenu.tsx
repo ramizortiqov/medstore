@@ -8,6 +8,7 @@ interface CategoryMenuProps {
   onSelectCategory: (category: Category) => void;
   onClose: () => void;
   onOpenAdmin: () => void;
+  isAdmin: boolean; // <-- НОВОЕ: Принимаем статус админа
 }
 
 export const CategoryMenu: React.FC<CategoryMenuProps> = ({ 
@@ -15,7 +16,8 @@ export const CategoryMenu: React.FC<CategoryMenuProps> = ({
   selectedCategory, 
   onSelectCategory, 
   onClose,
-  onOpenAdmin
+  onOpenAdmin,
+  isAdmin // <-- НОВОЕ
 }) => {
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
@@ -60,17 +62,21 @@ export const CategoryMenu: React.FC<CategoryMenuProps> = ({
         </div>
         
         <div className="p-4 border-t border-gray-100 bg-gray-50">
-           <button 
-             onClick={() => {
-               onClose();
-               onOpenAdmin();
-             }}
-             className="w-full flex items-center justify-center gap-2 py-2 text-gray-400 hover:text-gray-800 transition-colors text-sm"
-           >
-             <Settings className="w-4 h-4" />
-             <span>Администратор</span>
-           </button>
-           <div className="mt-2 text-xs text-center text-gray-300">MedBooks Store v1.1</div>
+           {/* <-- НОВОЕ: Кнопка видна только если isAdmin === true */}
+           {isAdmin && (
+             <button 
+               onClick={() => {
+                 onClose();
+                 onOpenAdmin();
+               }}
+               className="w-full flex items-center justify-center gap-2 py-2 text-gray-400 hover:text-gray-800 transition-colors text-sm mb-2"
+             >
+               <Settings className="w-4 h-4" />
+               <span>Администратор</span>
+             </button>
+           )}
+           
+           <div className="text-xs text-center text-gray-300">MedBooks Store v1.1</div>
         </div>
       </div>
     </div>
