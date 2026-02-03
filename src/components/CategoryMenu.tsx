@@ -76,7 +76,7 @@ export const CategoryMenu: React.FC<CategoryMenuProps> = ({
              </button>
            )}
            
-           <div className="text-xs text-center text-gray-300">MedBooks Store v1.1</div>
+           <div className="text-xs text-center text-gray-300">МедЭкзамен</div>
         </div>
       </div>
     </div>
